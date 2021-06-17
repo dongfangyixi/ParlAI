@@ -4,6 +4,7 @@ https://commoncrawl.org/2021/05/may-2021-crawl-archive-now-available/
 get wet data path first
 """
 from tqdm import tqdm
+from p_tqdm import p_map
 import wget
 import multiprocessing
 from multiprocessing import Pool
@@ -32,8 +33,7 @@ def download(path_file):
     # for url in tqdm(urls):
     #     wget.download(url)
 
-    with Pool(10) as p:
-        tqdm(p.imap(wget.download, urls), total=len(urls))
+    p_map(wget.download, urls, num_cpus=10)
 
 
 if __name__ == "__main__":
