@@ -367,11 +367,11 @@ class MIXER(nn.Module):
         x = x.permute((2, 0, 1)).contiguous()
         return x
 
-    def forward(self, query: torch.Tensor, key: torch.Tensor, value: torch.Tensor, mask: Optional[torch.Tensor] = None):
+    def forward(self, query: torch.Tensor, mask: Optional[torch.Tensor] = None):
         # $\text{query}$,$\text{key}$, and $\text{value}$ all should be equal to $x$ for token mixing
-        assert query is key and key is value
+        # assert query is key and key is value
         # Token mixing doesn't support masking. i.e. all tokens will see all other token embeddings.
-        assert mask is None
+        # assert mask is None
         x = query
         print("attention input: ", x.shape)
         # channel mixer fft
