@@ -387,7 +387,7 @@ class MIXER(nn.Module):
         # $$\mathcal{F}_\text{seq} \big(\mathcal{F}_\text{hidden} (x) \big)$$
         # token mixer fft
         # x = torch.fft.fft(x, dim=0)
-        x = self.channel_mixer(x)
+        # x = self.channel_mixer(x)
 
         x = self.token_mixer(x)
         x = x[:, :seq_len, :]
