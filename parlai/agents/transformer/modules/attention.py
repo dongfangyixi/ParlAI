@@ -390,6 +390,7 @@ class MIXER(nn.Module):
         x = self.channel_mixer(x)
 
         x = self.token_mixer(x)
+        x = x[:, :seq_len, :]
         # x = self.pfft_token_mixer(x)
         # x = torch.fft.fft(x, dim=0).real
 
