@@ -372,6 +372,7 @@ class MIXER(nn.Module):
         # assert query is key and key is value
         # Token mixing doesn't support masking. i.e. all tokens will see all other token embeddings.
         # assert mask is None
+        print("attention mask: ", mask.shape)
         x = query
         print("attention input: ", x.shape)
         # channel mixer fft
