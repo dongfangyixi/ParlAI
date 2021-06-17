@@ -284,6 +284,7 @@ class MultiHeadAttention(nn.Module):
 class MIXER(nn.Module):
     def __init__(self, sequence_length, hidden_dim):
         super().__init__()
+        self.sequence_length = sequence_length
         self.token_w = nn.Linear(sequence_length, sequence_length)
         self.hidden_w = nn.Linear(hidden_dim, hidden_dim)
         self.pfft_token_w = nn.Linear(1, sequence_length)
@@ -372,6 +373,11 @@ class MIXER(nn.Module):
         # assert query is key and key is value
         # Token mixing doesn't support masking. i.e. all tokens will see all other token embeddings.
         # assert mask is None
+        batch_size, seq_len, dim = query.shape
+        if seq_len < self.sequence_length:
+            query = torch.nn.functional.pad(query, (0, 0, 0, self.sequence_length), mode="constant", value=0)
+        else:
+            query = query[:, :self.sequence_length, :]
         print("attention mask: ", mask.shape)
         x = query
         print("attention input: ", x.shape)
