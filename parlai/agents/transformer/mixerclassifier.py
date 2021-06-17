@@ -4,4 +4,4 @@
 # LICENSE file in the root directory of this source tree.
 
 # hack to make sure calling '-m transformer/ranker' works.
-from .mixer import TransformerClassifierAgent as ClassifierAgent  # noqa: F401
+from .mixer import TransformerClassifierAgent as MixerClassifierAgent  # noqa: F401
