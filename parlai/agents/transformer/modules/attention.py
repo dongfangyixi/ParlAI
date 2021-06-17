@@ -311,10 +311,10 @@ class MIXER(nn.Module):
         :param x:
         :return:
         """
-        x = x.permute((2, 1, 0))
+        x = x.permute((0, 2, 1))
         x = self.token_w(x)
         # x = self.token_norm(x)
-        x = x.permute((2, 1, 0))
+        x = x.permute((0, 2, 1))
         return x
 
     def pfft_channel_mixer(self, x):
