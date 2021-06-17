@@ -33,7 +33,7 @@ def download(path_file):
     #     wget.download(url)
 
     with Pool(10) as p:
-        p.map(wget.download, urls)
+        tqdm(p.imap(wget.download, urls))
 
 
 if __name__ == "__main__":
