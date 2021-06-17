@@ -28,7 +28,7 @@ def download(path_file):
     urls = []
     with open(path_file, 'r') as f:
         for line in f:
-    #         urls.append(get_addr(line.strip()))
+            urls.append(get_addr(line.strip()))
     # for url in tqdm(urls):
     #     wget.download(url)
 
