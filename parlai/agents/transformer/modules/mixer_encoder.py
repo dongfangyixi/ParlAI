@@ -71,7 +71,7 @@ class MixerEncoderLayer(nn.Module):
         #     dropout=attention_dropout,  # --attention-dropout
         # )
         self.attention = self.swappables.self_attention(  # type: ignore
-            sequence_length=300,
+            sequence_length=150,
             hidden_dim=embedding_size,
         )
         self.norm1 = torch.nn.LayerNorm(embedding_size, eps=LAYER_NORM_EPS)
