@@ -373,6 +373,7 @@ class MIXER(nn.Module):
         # Token mixing doesn't support masking. i.e. all tokens will see all other token embeddings.
         assert mask is None
         x = query
+        print("attention input: ", x.shape)
         # channel mixer fft
         # x = torch.fft.fft(x, dim=2)
         # Apply the Fourier transform along the sequence dimension
