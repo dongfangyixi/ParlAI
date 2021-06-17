@@ -244,7 +244,7 @@ class TransformerRankerAgent(TorchRankerAgent):
         """
         Build and return model.
         """
-        model = TransformerMemNetModel(self.opt, self.dict)
+        model = MixerEncoder(self.opt, self.dict)
         if self.opt['embedding_type'] != 'random':
             self._copy_embeddings(model.embeddings.weight, self.opt['embedding_type'])
         return model
@@ -401,7 +401,7 @@ class TransformerClassifierAgent(TorchClassifierAgent):
 
     def build_model(self):
         num_classes = len(self.class_list)
-        self.base_model = TransformerMemNetModel(self.opt, self.dict)
+        self.base_model = MixerEncoder(self.opt, self.dict)
         return TransformerLinearWrapper(self.base_model.context_encoder, num_classes)
 
     def vectorize(self, *args, **kwargs):
