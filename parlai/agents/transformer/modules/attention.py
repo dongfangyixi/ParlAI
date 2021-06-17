@@ -378,9 +378,9 @@ class MIXER(nn.Module):
             query = torch.nn.functional.pad(query, (0, 0, 0, self.sequence_length - seq_len), mode="constant", value=0)
         else:
             query = query[:, :self.sequence_length, :]
-        print("attention mask: ", mask.shape)
+        # print("attention mask: ", mask.shape)
         x = query
-        print("attention input: ", x.shape)
+        # print("attention input: ", x.shape)
         # channel mixer fft
         # x = torch.fft.fft(x, dim=2)
         # Apply the Fourier transform along the sequence dimension
