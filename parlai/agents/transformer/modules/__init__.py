@@ -9,7 +9,7 @@ from .functions import (  # noqa: F401
     create_position_codes,
     get_n_positions_from_options,
 )
-from .attention import BasicAttention, MultiHeadAttention  # noqa: F401
+from .attention import BasicAttention, MultiHeadAttention, MIXER  # noqa: F401
 from .ffn import TransformerFFN  # noqa: F401
 from .encoder import TransformerEncoder, TransformerEncoderLayer  # noqa: F401
 from .decoder import TransformerDecoder, TransformerDecoderLayer  # noqa: F401
