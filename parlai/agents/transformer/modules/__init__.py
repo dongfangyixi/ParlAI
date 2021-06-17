@@ -16,4 +16,4 @@ from .mixer_encoder import MixerEncoder
 from .decoder import TransformerDecoder, TransformerDecoderLayer  # noqa: F401
 from .generator import TransformerGeneratorModel  # noqa: F401
 from .wrappers import TransformerLinearWrapper, TransformerResponseWrapper  # noqa: F401
-from .mem_net import TransformerMemNetModel  # noqa: F401
+from .mem_net import TransformerMemNetModel, MixerModel  # noqa: F401
