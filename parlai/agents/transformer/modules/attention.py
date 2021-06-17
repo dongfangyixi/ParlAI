@@ -375,7 +375,7 @@ class MIXER(nn.Module):
         # assert mask is None
         batch_size, seq_len, dim = query.shape
         if seq_len < self.sequence_length:
-            query = torch.nn.functional.pad(query, (0, 0, 0, self.sequence_length), mode="constant", value=0)
+            query = torch.nn.functional.pad(query, (0, 0, 0, self.sequence_length - seq_len), mode="constant", value=0)
         else:
             query = query[:, :self.sequence_length, :]
         print("attention mask: ", mask.shape)
