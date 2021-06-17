@@ -108,8 +108,8 @@ class MixerEncoderLayer(nn.Module):
         return tensor
 
 
-@swappable(layer=TransformerEncoderLayer)
-class TransformerEncoder(nn.Module):
+@swappable(layer=MixerEncoderLayer)
+class MixerEncoder(nn.Module):
     """
     Transformer encoder module.
 

@@ -11,6 +11,7 @@ from parlai.agents.transformer.modules import (
     create_embeddings,
     BasicAttention,
     TransformerEncoder,
+    MixerEncoder,
     TransformerResponseWrapper,
 )
 from parlai.core.opt import Opt
@@ -42,7 +43,7 @@ class TransformerMemNetModel(nn.Module):
     def build_encoder(
         cls, opt, dictionary, embedding=None, padding_idx=None, reduction_type='mean'
     ):
-        return TransformerEncoder(
+        return MixerEncoder(   # transformer encoder
             opt=opt,
             embedding=embedding,
             vocabulary_size=len(dictionary),
