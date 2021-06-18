@@ -21,6 +21,7 @@ from .modules import (
     TransformerGeneratorModel,
     TransformerLinearWrapper,
     MixerModel,
+    MixerGeneratorModel,
 )
 
 import torch
@@ -340,7 +341,7 @@ class TransformerGeneratorAgent(TorchGeneratorAgent):
         """
         Build and return model.
         """
-        model = TransformerGeneratorModel(self.opt, self.dict)
+        model = MixerGeneratorModel(self.opt, self.dict)
         if self.opt['embedding_type'] != 'random':
             self._copy_embeddings(
                 model.encoder.embeddings.weight, self.opt['embedding_type']

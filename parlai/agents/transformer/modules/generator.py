@@ -27,6 +27,8 @@ from parlai.agents.transformer.modules import (
     create_embeddings,
     TransformerDecoder,
     TransformerEncoder,
+    MixerEncoder,
+    MixerDecoder,
 )
 from parlai.agents.transformer.modules.modular import swappable
 from parlai.core.opt import Opt
@@ -69,6 +71,107 @@ class TransformerGeneratorModel(TorchGeneratorModel):
         decoder_class: Type[TransformerDecoder] = TransformerDecoder,
         **kwargs,
     ) -> TransformerDecoder:
+        return decoder_class(opt=opt, embedding=embedding, **kwargs)
+
+    def __init__(self, opt: Opt, dictionary: DictionaryAgent, **kwargs):
+        self.pad_idx = dictionary[dictionary.null_token]
+        self.start_idx = dictionary[dictionary.start_token]
+        self.end_idx = dictionary[dictionary.end_token]
+        super().__init__(self.pad_idx, self.start_idx, self.end_idx, **kwargs)
+        self.opt = opt
+        self.embeddings = create_embeddings(
+            dictionary, opt['embedding_size'], self.pad_idx
+        )
+
+        self.encoder = self.build_encoder(
+            opt,
+            dictionary,
+            self.embeddings,
+            self.pad_idx,
+            reduction_type=None,
+            encoder_class=self.swappables.encoder,  # type: ignore
+        )
+        self.decoder = self.build_decoder(
+            opt,
+            embedding=self.embeddings,
+            decoder_class=self.swappables.decoder,  # type: ignore
+        )
+
+    def reorder_encoder_states(self, encoder_states, indices):
+        """
+        Reorder the encoder states.
+
+        See ``TorchGeneratorModel.reorder_encoder_states`` for a description.
+        """
+        enc, mask = encoder_states
+        if not torch.is_tensor(indices):
+            indices = torch.LongTensor(indices).to(enc.device)
+        enc = torch.index_select(enc, 0, indices)
+        mask = torch.index_select(mask, 0, indices)
+        return enc, mask
+
+    def reorder_decoder_incremental_state(
+        self, incremental_state: Dict[int, dict], inds: torch.Tensor
+    ) -> Dict[int, dict]:
+        """
+        Reorder the decoder incremental state.
+
+        See ``TorchGeneratorModel.reorder_decoder_incremental_state`` for a description.
+
+        Here, incremental_state is a dict whose keys are layer indices and whose values
+        are dicts containing the incremental state for that layer.
+        """
+        return {
+            idx: layer.reorder_incremental_state(incremental_state[idx], inds)
+            for idx, layer in enumerate(self.decoder.layers)
+        }
+
+    def output(self, tensor):
+        """
+        Compute output logits.
+        """
+        # project back to vocabulary
+        output = F.linear(tensor, self.embeddings.weight)
+        # compatibility with fairseq: fairseq sometimes reuses BOS tokens and
+        # we need to force their probability of generation to be 0.
+        output[:, :, self.start_idx] = neginf(output.dtype)
+        return output
+
+
+@swappable(encoder=MixerEncoder, decoder=MixerDecoder)
+class MixerGeneratorModel(TorchGeneratorModel):
+    """
+    Implements a full generator model, with one encoder and one decoder.
+    """
+
+    @classmethod
+    def build_encoder(
+        cls,
+        opt,
+        dictionary,
+        embedding=None,
+        padding_idx=None,
+        reduction_type='mean',
+        encoder_class: Type[MixerEncoder] = MixerEncoder,
+        **kwargs,
+    ) -> MixerEncoder:
+        return encoder_class(
+            opt=opt,
+            embedding=embedding,
+            vocabulary_size=len(dictionary),
+            padding_idx=padding_idx,
+            reduction_type=reduction_type,
+            **kwargs,
+        )
+
+    @classmethod
+    def build_decoder(
+        cls,
+        opt,
+        embedding=None,
+        decoder_class: Type[MixerDecoder] = MixerDecoder,
+        **kwargs,
+    ) -> MixerDecoder:
         return decoder_class(opt=opt, embedding=embedding, **kwargs)
 
     def __init__(self, opt: Opt, dictionary: DictionaryAgent, **kwargs):
