@@ -73,7 +73,7 @@ class MixerDecoderLayer(nn.Module):
         # self.self_attention = self.swappables.self_attention(
         #     opt=self.opt, n_heads=n_heads, dim=embedding_size, dropout=attention_dropout
         # )  # type: ignore
-        self.attention = self.swappables.self_attention(  # type: ignore
+        self.self_attention = self.swappables.self_attention(  # type: ignore
             sequence_length=512,
             hidden_dim=embedding_size,
         )
