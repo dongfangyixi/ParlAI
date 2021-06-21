@@ -30,15 +30,21 @@ def download(path_file):
     """
     urls = []
     downloaded_files = os.listdir('./')
+    downloaded_c = 0
     with open(path_file, 'r') as f:
         for line in f:
             file_name = line.strip().split('/')[-1]
             if file_name in downloaded_files:
-                print(file_name)
-                continue
-            urls.append(get_addr(line.strip()))
+                # print(file_name)
+                downloaded_c += 1
+                # continue
+            else:
+                # print("not downloaded")
+                urls.append(get_addr(line.strip()))
     # for url in tqdm(urls):
     #     wget.download(url)
+    print("Downloaded files num: ", downloaded_c)
+    print("To be Downloaded files num: ", len(urls))
 
     # p_map(wget.download, urls, num_cpus=10)
 
