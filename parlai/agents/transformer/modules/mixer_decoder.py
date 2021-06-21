@@ -197,7 +197,7 @@ class MixerDecoderLayer(nn.Module):
 
 
 @swappable(layer=MixerDecoderLayer)
-class TransformerDecoder(nn.Module):
+class MixerDecoder(nn.Module):
     """
     Transformer Decoder module.
 
