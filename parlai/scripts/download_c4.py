@@ -46,7 +46,7 @@ def download(path_file):
     print("Downloaded files num: ", downloaded_c)
     print("To be Downloaded files num: ", len(urls))
 
-    # p_map(wget.download, urls, num_cpus=10)
+    p_map(wget.download, urls, num_cpus=10)
 
 
 if __name__ == "__main__":
