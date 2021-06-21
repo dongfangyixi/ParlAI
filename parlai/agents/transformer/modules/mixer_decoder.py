@@ -121,9 +121,9 @@ class MixerDecoderLayer(nn.Module):
         x, final_self_attn_incr_state = self.self_attention(
             query=x,
             mask=decoder_mask,
-            incr_state=incr_state.get('self_attn'),
-            static_kv=False,
-            **kwargs,
+            # incr_state=incr_state.get('self_attn'),
+            # static_kv=False,
+            # **kwargs,
         )[:2]
         x = self.dropout(x)  # --dropout
         x = x + residual
