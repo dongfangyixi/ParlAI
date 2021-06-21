@@ -6,8 +6,10 @@ get wet data path first
 from tqdm import tqdm
 from p_tqdm import p_map
 import wget
+import os
 import multiprocessing
 from multiprocessing import Pool
+
 
 def get_addr(local_addr):
     """
@@ -27,13 +29,18 @@ def download(path_file):
     :return:
     """
     urls = []
+    downloaded_files = os.listdir('./')
     with open(path_file, 'r') as f:
         for line in f:
+            file_name = line.strip().split('/')[-1]
+            if file_name in downloaded_files:
+                print(file_name)
+                continue
             urls.append(get_addr(line.strip()))
     # for url in tqdm(urls):
     #     wget.download(url)
 
-    p_map(wget.download, urls, num_cpus=10)
+    # p_map(wget.download, urls, num_cpus=10)
 
 
 if __name__ == "__main__":
