@@ -27,11 +27,7 @@ from parlai.utils.misc import warn_once
 from parlai.utils.torch import PipelineHelper
 
 
-@swappable(
-    self_attention=MIXER,
-    encoder_attention=MultiHeadAttention,
-    feedforward=TransformerFFN,
-)
+@swappable(self_attention=MIXER, encoder_attention=MultiHeadAttention, feedforward=TransformerFFN)
 class MixerDecoderLayer(nn.Module):
     """
     Implements a single Transformer decoder layer.
