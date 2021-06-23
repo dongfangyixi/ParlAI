@@ -395,3 +395,11 @@ class MIXER(nn.Module):
         # x = torch.fft.fft(x, dim=0).real
 
         return x, None, None
+
+    def reorder_incremental_state(
+        self, incremental_state: Dict[str, torch.Tensor], inds: torch.Tensor
+    ) -> Dict[str, torch.Tensor]:
+        """
+        Reorder the input incremental-state tensors.
+        """
+        return None
